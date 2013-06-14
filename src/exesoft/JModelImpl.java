@@ -14,7 +14,7 @@ import java.util.Map.Entry;
  */
 public class JModelImpl implements JModel {
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings("rawtypes")
 	@Override
 	public String encode(final Map<String, Object> toJson)
 			throws ClassCastException {
@@ -69,6 +69,7 @@ public class JModelImpl implements JModel {
 		
 		bufferJson.append(":[ ");
 		if (list.get(0) instanceof List) {
+			bufferJson.append(":[ ");
 			for (int i = 0; i < list.size(); i++) {
 				bufferJson.append("{");
 				bufferJson.append(handleList((List) list.get(i)));
@@ -76,19 +77,24 @@ public class JModelImpl implements JModel {
 				if (i < list.size() - 1)
 					bufferJson.append(", ");
 			}
+			bufferJson.append(" ],");
 		} else if (list.get(0) instanceof Map) {
+			bufferJson.append(":[ ");
 			for (int i = 0; i < list.size(); i++) {
 				bufferJson.append("{");
 				bufferJson.append(handleMap((Map) list.get(i)));
 				if (i < list.size() - 1)
 					bufferJson.append(", ");
 			}
+			bufferJson.append(" ],");
 		} else {
+			bufferJson.append(":[ ");
 			for (int i = 0; i < list.size(); i++) {
 				bufferJson.append(list.get(i));
 				if (i < list.size() - 1)
 					bufferJson.append(", ");
 			}
+			bufferJson.append(" ]");
 		}
 		bufferJson.append(" ]");
 
