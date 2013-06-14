@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.Set;
  
 /**
+<<<<<<< HEAD
  * JSerializeReader - Class responsible for the mapping of the object based on the information obtained from
  * object JModel, which in decoding process (method decode) will create a String object,
  * as we can see in the example.
@@ -24,6 +25,10 @@ import java.util.Set;
  * String to process in JModel :<br>
  * java.lang.Osoba{imie(java.lang.String):x;nazwisko(java.lang.String):y;}
  * 
+=======
+ * 
+ *
+>>>>>>> JSerialize/master
  * @author Micha³ Krakiewicz
  *
  */
@@ -31,7 +36,11 @@ import java.util.Set;
 public class JSerializeReaderImpl implements JSerializeReader {
  
         /**
+<<<<<<< HEAD
          * Helper class for holding fields data
+=======
+         * 
+>>>>>>> JSerialize/master
          *
          * @author Micha³
          *
@@ -39,6 +48,7 @@ public class JSerializeReaderImpl implements JSerializeReader {
         static class JSONElement {
  
                
+<<<<<<< HEAD
                 /**
                  * Stores field name.
                  */
@@ -57,6 +67,19 @@ public class JSerializeReaderImpl implements JSerializeReader {
                  * @param name - a String
                  * @param type - a String
                  * @param innerTypes - non-parsed object containing inner hashmap or list
+=======
+                private String name;
+ 
+                private String type;
+ 
+                
+                private Object innerTypes;
+ 
+                /**
+                 * @param name
+                 * @param type
+                 * @param innerTypes
+>>>>>>> JSerialize/master
                  */
                 public JSONElement(String name, String type, final Object innerTypes) {
  
@@ -67,60 +90,101 @@ public class JSerializeReaderImpl implements JSerializeReader {
  
                 /**
                  * 
+<<<<<<< HEAD
                  * @return Get parsed object, or class member name.
+=======
+                 *
+                 * @return
+>>>>>>> JSerialize/master
                  */
                 public String getName() {
                         return name;
                 }
  
                 /**
+<<<<<<< HEAD
                  * 
                  * @return Get string containing object type to be created.
+=======
+                 *
+                 *
+                 * @return
+>>>>>>> JSerialize/master
                  */
                 public String getType() {
                         return type;
                 }
  
                 /**
+<<<<<<< HEAD
                  * Set new object type to be created.
                  *
                  * @param newtype - object string
+=======
+                 * 
+                 *
+                 * @param newtype
+>>>>>>> JSerialize/master
                  */
                 public void setType(String newtype) {
                         type = newtype;
                 }
  
                 /**
+<<<<<<< HEAD
                  * Helper function to cast as Map<>.
                  *
                  * @return Get object as Map.
+=======
+                 * 
+                 *
+                 * @return
+>>>>>>> JSerialize/master
                  */
                 public Map<String, Object> getAsMap() {
                         return ((Map<String, Object>) innerTypes);
                 }
  
                 /**
+<<<<<<< HEAD
                  * Helper function to cast as List.
                  *
                  * @return Get object as List.
+=======
+                 * 
+                 *
+                 * @return
+>>>>>>> JSerialize/master
                  */
                 public List<Object> getAsList() {
                         return (List<Object>) innerTypes;
                 }
  
                 /**
+<<<<<<< HEAD
                  * Helper function that returns supposed raw Map string (name#type)
                  *
                  * @return Get string as hashmap key.
+=======
+                 * 
+                 *
+                 * @return
+>>>>>>> JSerialize/master
                  */
                 public String getStringWithHash() {
                         return new String(name + '#' + type);
                 }
  
                 /**
+<<<<<<< HEAD
                  * Access inner object without casting.
                  *
                  * @return Get non-parser object containing inner hashmap or list.
+=======
+                 *
+                 *
+                 * @return
+>>>>>>> JSerialize/master
                  */
                 public Object getInner() {
                         return innerTypes;
@@ -128,6 +192,7 @@ public class JSerializeReaderImpl implements JSerializeReader {
  
         }
  
+<<<<<<< HEAD
         /**
          * Class member holding the deserialized object.
          */
@@ -148,6 +213,21 @@ public class JSerializeReaderImpl implements JSerializeReader {
          * Helper method to output debug info if in debug mode.
          *
          * @param msg - a string displays the statements.
+=======
+       
+        private Object deserializedObject;
+ 
+      
+        private Map<String, Object> objectHashMap;
+ 
+        
+        private static boolean debug = true;
+ 
+        /**
+         * 
+         *
+         * @param msg
+>>>>>>> JSerialize/master
          */
         private static void dbg(String msg) {
  
@@ -157,6 +237,7 @@ public class JSerializeReaderImpl implements JSerializeReader {
  
         }
  
+<<<<<<< HEAD
         /**
          * Constant that defines map key containing main class type.
          */
@@ -165,6 +246,16 @@ public class JSerializeReaderImpl implements JSerializeReader {
         /**
          * Creates the object from hashmap using java reflection.
          *
+=======
+       
+        private static final String rootClassKey = "#JSerializeMetaData#RootClassName";
+ 
+        /**
+         * 
+         *
+         * (non-Javadoc).
+         *@param map
+>>>>>>> JSerialize/master
          * @see exesoft.JSerializeReader#fromMap(java.util.Map)
          */
         @Override
@@ -181,6 +272,10 @@ public class JSerializeReaderImpl implements JSerializeReader {
                 try {
                         deserializedObject = createObject(rootClass);
                 } catch (ClassNotFoundException e) {
+<<<<<<< HEAD
+=======
+                        // TODO Auto-generated catch block
+>>>>>>> JSerialize/master
                         e.printStackTrace();
                 }
  
@@ -189,12 +284,22 @@ public class JSerializeReaderImpl implements JSerializeReader {
         }
  
         /**
+<<<<<<< HEAD
         *
         * Helper function that decodes List type Hashmaps.
         * @param encoded - JSONElement to be encoded.
         * @param field - Field object of type of field to be encoded.
         * @return Get a List.
         */
+=======
+         *
+         * 
+         *
+         * @param encoded
+         * @param field
+         * @return
+         */
+>>>>>>> JSerialize/master
         protected List<Object> decodeList(final JSONElement encoded, final Field field) {
  
                 ArrayList<JSONElement> elementDataArr = decodeHashMapKeys(encoded
@@ -248,9 +353,16 @@ public class JSerializeReaderImpl implements JSerializeReader {
         }
  
         /**
+<<<<<<< HEAD
          * Helper function that converts List of type Integer to int[] array
          * @param list - list of integer number.
          * @return Get a array of integer.
+=======
+         * 
+         *
+         * @param list
+         * @return
+>>>>>>> JSerialize/master
          */
         private int[] toIntArray(List<Integer> list) {
                 int[] ret = new int[list.size()];
@@ -262,6 +374,7 @@ public class JSerializeReaderImpl implements JSerializeReader {
         }
  
         /**
+<<<<<<< HEAD
          * Helper function that creates Object of type specified in JSONElement object.
          * @param elem - JSONELement to be deserialied.
          * @return members object.
@@ -269,6 +382,13 @@ public class JSerializeReaderImpl implements JSerializeReader {
 					<br>- The forName method in class Class.
 					<br>- The findSystemClass method in class ClassLoader .
 					<br>- The loadClass method in class ClassLoader.
+=======
+         * 
+         *
+         * @param elem
+         * @return
+         * @throws ClassNotFoundException
+>>>>>>> JSerialize/master
          */
         protected Object createObject(final JSONElement elem)
                         throws ClassNotFoundException {
@@ -379,25 +499,39 @@ public class JSerializeReaderImpl implements JSerializeReader {
         }
  
         /**
+<<<<<<< HEAD
          * Reads the object from input stream.
          *@param input - read objects.
+=======
+         * 
+         *
+>>>>>>> JSerialize/master
          * @see exesoft.JSerializeReader#readObject(java.io.InputStream)
          */
         @Override
         public Boolean readObject(final InputStream input) {
                 JModel parser = new JModelImpl();
  
+<<<<<<< HEAD
                 /**
                  * Convert InputStream to string:
                  */
                 // Create BufferedReader object
+=======
+               
+              
+>>>>>>> JSerialize/master
                 BufferedReader bReader = new BufferedReader(
                                 new InputStreamReader(input));
  
                 StringBuffer sbf = new StringBuffer();
                 String line = null;
  
+<<<<<<< HEAD
                 // read line by line
+=======
+                
+>>>>>>> JSerialize/master
                 try {
                         while ((line = bReader.readLine()) != null) {
                                 sbf.append(line);
@@ -418,9 +552,16 @@ public class JSerializeReaderImpl implements JSerializeReader {
         }
  
         /**
+<<<<<<< HEAD
          * Helper function that decodes Map into list of JSONElements. Inner elements are to be parsed further.
          * @param map - map type of string
          * @return Get decoded list object type of JSONElements.
+=======
+         *
+         *
+         * @param map
+         * @return
+>>>>>>> JSerialize/master
          */
         protected static ArrayList<JSONElement> decodeHashMapKeys(
                         final Map<String, Object> map) {
@@ -474,9 +615,16 @@ public class JSerializeReaderImpl implements JSerializeReader {
         }
  
         /**
+<<<<<<< HEAD
          * @param map - map type of string
          * @return JSONElement with name of the class, and innerTypes containing the
          *         map without class name map entry as 'JSerializeMetaData#RootClassName'
+=======
+         * @param map
+         * @return JSONElement with name of the class, and innerTypes containing the
+         *         map without class name map entry as
+         *         'JSerializeMetaData#RootClassName'
+>>>>>>> JSerialize/master
          */
         protected static JSONElement processClassRoot(final Map<String, Object> map) {
                 Object tmp = null;
