@@ -8,8 +8,10 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.Boolean;
+import java.math.BigDecimal;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -28,10 +30,10 @@ private JModel parses = new JModelImpl();
 	private static Map<String, String> knownHashes = new HashMap<String, String>();
 
 	private Map<String, String> aliases = new HashMap<String, String>(); // to be considered
-	
-															
+
+
 	private Map<String, String>fieldsToConsider = new HashMap<String, String>();
-	
+
 	public JSerializeWriterImpl() {
 		fieldsToConsider.put(String.class.getName(), "value");
 		fieldsToConsider.put(List.class.getName(), "elementData");
@@ -45,13 +47,17 @@ private JModel parses = new JModelImpl();
 				"root,parent,right,left,key,value");
 		fieldsToConsider.put(HashSet.class.getName(), "map");
 		fieldsToConsider.put(Integer.class.getName(), "value");
+		fieldsToConsider.put(Character.class.getName(), "value");
+		fieldsToConsider.put(Double.class.getName(), "value");
+		fieldsToConsider.put(Float.class.getName(), "value");
+		fieldsToConsider.put(Date.class.getName(), "value");		
 
 		// fieldsToConsider.put(LinkedList.class.getName()+"#Node",
 		// "first,next,prev");
 		// ADD MORE COMMON TYPES USED IN JAVA AND THEIR FIELDS
 	}
-	
-	
+
+
 
 	public Map<String, Object> prepareMap(final Object ob) {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -67,7 +73,7 @@ private JModel parses = new JModelImpl();
 	public Map<String , String> getAliases() { 
 		return aliases;  
 		}
-	
+
 	public Map<String, String> getKnownHashes() { 
 		return knownHashes;  
 		}
@@ -77,9 +83,9 @@ private JModel parses = new JModelImpl();
 	public JModel getParser() { 
 		return parses; 
 		}
-	
-	
-			
+
+
+
 
 	Map<String, Object> toMap(final Object ob) {
 
@@ -243,14 +249,15 @@ private JModel parses = new JModelImpl();
 								try {
 									String type = ((Object[]) value)[0]
 											.getClass().getName();
-									if(((Object[]) value)[i]!=null)
+									if(((Object[]) value)[i]!=null){
 									lista.add(toMap((Class.forName(type).cast(((Object[]) value)[i]))));
+									}
 								} catch (ClassNotFoundException e) {
 									e.printStackTrace();
 								} catch (NullPointerException e) {
-									
+
 								}
-								
+
 							}
 							if (knownHashes.containsKey(hashString)) {
 								map.put(field.getName() + "#"
