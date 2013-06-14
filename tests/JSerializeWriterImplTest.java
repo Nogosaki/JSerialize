@@ -28,6 +28,8 @@ public class JSerializeWriterImplTest {
 	ObjectWithPriorityQueue os10;
 	ObjectWithArrayDeque os11;
 	ObjectWithBooleanField os12;
+	ObjectWithFloatField os13;
+	ObjectWithDoubleField os14;
 
 	boolean equalMaps(Map<String, Object> m1, Map<String, Object> m2) {
 
@@ -55,6 +57,8 @@ public class JSerializeWriterImplTest {
 		os10 = new ObjectWithPriorityQueue();
 		os11 = new ObjectWithArrayDeque();
 		os12 = new ObjectWithBooleanField();
+		os13 = new ObjectWithFloatField();
+		os14 = new ObjectWithDoubleField();
 	}
 
 	/**
@@ -230,6 +234,32 @@ public class JSerializeWriterImplTest {
 				.getName());
 
 		Map<String, Object> generated = writer.prepareMap(os12);
+
+		assertTrue(equalMaps(expected, generated));
+	}
+
+	@Test
+	public void testObjectWithFloatField() {
+		Map<String, Object> expected = new HashMap<String, Object>();
+		expected.put("a#float", 1.5);
+		expected.put("b#float", 2.1);
+		expected.put("#JSerializeMetaData#RootClassName", os13.getClass()
+				.getName());
+
+		Map<String, Object> generated = writer.prepareMap(os13);
+
+		assertTrue(equalMaps(expected, generated));
+	}
+
+	@Test
+	public void testObjectWithDoubleField() {
+		Map<String, Object> expected = new HashMap<String, Object>();
+		expected.put("a#double", 1.5);
+		expected.put("b#double", 2.1);
+		expected.put("#JSerializeMetaData#RootClassName", os14.getClass()
+				.getName());
+
+		Map<String, Object> generated = writer.prepareMap(os14);
 
 		assertTrue(equalMaps(expected, generated));
 	}
