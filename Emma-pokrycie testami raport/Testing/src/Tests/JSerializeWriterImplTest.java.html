@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pl"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>JSerializeWriterImplTest.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Test (2013-06-14 10:10:22)</a> &gt; <a href="../../index.html" class="el_group">Testing</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.html" class="el_package">Tests</a> &gt; <span class="el_source">JSerializeWriterImplTest.java</span></div><h1>JSerializeWriterImplTest.java</h1><pre class="source lang-java linenums">package Tests;
+
+import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import exesoft.*;
+
+<span class="nc" id="L16">public class JSerializeWriterImplTest {</span>
+
+	JSerializeWriter writer;
+	ObjectWithPrimitives os;
+	ObjectWithAnotherObject os2;
+	ObjectWithList os3;
+	ObjectWithPrivateField os4;
+	ObjectWithTreeMap os5;
+	ObjectWithTransientField os6;
+	ObjectWithHashSet os7;
+	ObjectWithTreeSet os8;
+	ObjectWithLinkedList os9;
+	ObjectWithPriorityQueue os10;
+
+	boolean equalMaps(Map&lt;String, Object&gt; m1, Map&lt;String, Object&gt; m2) {
+
+<span class="nc bnc" id="L32" title="All 2 branches missed.">		if (m1.size() != m2.size()) {</span>
+<span class="nc" id="L33">			return false;</span>
+		}
+<span class="nc bnc" id="L35" title="All 2 branches missed.">		if (!m1.keySet().equals(m2.keySet())) {</span>
+<span class="nc" id="L36">			return false;</span>
+		}
+<span class="nc" id="L38">		return true;</span>
+	}
+
+	@Before
+	public void setUp() throws Exception {
+<span class="nc" id="L43">		writer = new JSerializeWriterImpl();</span>
+<span class="nc" id="L44">		os = new ObjectWithPrimitives();</span>
+<span class="nc" id="L45">		os2 = new ObjectWithAnotherObject();</span>
+<span class="nc" id="L46">		os3 = new ObjectWithList();</span>
+<span class="nc" id="L47">		os4 = new ObjectWithPrivateField();</span>
+<span class="nc" id="L48">		os5 = new ObjectWithTreeMap();</span>
+<span class="nc" id="L49">		os6 = new ObjectWithTransientField();</span>
+<span class="nc" id="L50">		os7 = new ObjectWithHashSet();</span>
+<span class="nc" id="L51">		os8 = new ObjectWithTreeSet();</span>
+<span class="nc" id="L52">		os9 = new ObjectWithLinkedList();</span>
+<span class="nc" id="L53">		os10 = new ObjectWithPriorityQueue();</span>
+<span class="nc" id="L54">	}</span>
+
+/**
+ * Test sprawdzający działanie metody dla klasy z typem prymitywnym np. int, float.
+ * Sprawdza, czy wygenerowana mapa będzie zgodna z oczekiwaniami.
+ */
+	@Test
+	public void testObjectWithPrimitives() {
+
+<span class="nc" id="L63">		Map&lt;String, Object&gt; expected = new HashMap&lt;String, Object&gt;();</span>
+<span class="nc" id="L64">		expected.put(&quot;a#int&quot;, 10);</span>
+<span class="nc" id="L65">		expected.put(&quot;b#int&quot;, 10);</span>
+<span class="nc" id="L66">		expected.put(&quot;#JSerializeMetaData#RootClassName&quot;, os.getClass()</span>
+<span class="nc" id="L67">				.getName());</span>
+
+<span class="nc" id="L69">		Map&lt;String, Object&gt; generated = writer.prepareMap(os);</span>
+
+<span class="nc" id="L71">		assertTrue(equalMaps(expected, generated));</span>
+<span class="nc" id="L72">	}</span>
+
+/**
+ * Test sprawdzający działanie metody dla klasy z listą np.ArrayList.
+ * Sprawdza, czy wygenerowana mapa będzie zgodna z oczekiwaniami.
+ */
+
+	@Test
+	public void testObjectWithList() {
+<span class="nc" id="L81">		Map&lt;String, Object&gt; expected = new HashMap&lt;String, Object&gt;();</span>
+<span class="nc" id="L82">		expected.put(&quot;lista#java.util.ArrayList&quot;, new HashMap&lt;String, Object&gt;());</span>
+<span class="nc" id="L83">		expected.put(&quot;#JSerializeMetaData#RootClassName&quot;, os3.getClass()</span>
+<span class="nc" id="L84">				.getName());</span>
+
+<span class="nc" id="L86">		Map&lt;String, Object&gt; generated = writer.prepareMap(os3);</span>
+
+<span class="nc" id="L88">		assertTrue(equalMaps(expected, generated));</span>
+<span class="nc" id="L89">	}</span>
+
+
+/**
+ * Test sprawdza, czy prywatne pola klasy są serializowane.
+ * Sprawdza, czy wygenerowana mapa będzie zgodna z oczekiwaniami
+ */
+	@Test
+	public void testObjectWithPrivateFields() {
+<span class="nc" id="L98">		Map&lt;String, Object&gt; expected = new HashMap&lt;String, Object&gt;();</span>
+<span class="nc" id="L99">		expected.put(&quot;a#int&quot;, 10);</span>
+<span class="nc" id="L100">		expected.put(&quot;b#int&quot;, 10);</span>
+<span class="nc" id="L101">		expected.put(&quot;c#int&quot;, 10);</span>
+<span class="nc" id="L102">		expected.put(&quot;#JSerializeMetaData#RootClassName&quot;, os4.getClass()</span>
+<span class="nc" id="L103">				.getName());</span>
+
+<span class="nc" id="L105">		Map&lt;String, Object&gt; generated = writer.prepareMap(os4);</span>
+
+<span class="nc" id="L107">		assertTrue(equalMaps(expected, generated));</span>
+<span class="nc" id="L108">	}</span>
+
+	@Test
+	public void testObjectWithTransientFields() {
+<span class="nc" id="L112">		Map&lt;String, Object&gt; expected = new HashMap&lt;String, Object&gt;();</span>
+<span class="nc" id="L113">		expected.put(&quot;a#int&quot;, 10);</span>
+<span class="nc" id="L114">		expected.put(&quot;b#int&quot;, 10);</span>
+<span class="nc" id="L115">		expected.put(&quot;#JSerializeMetaData#RootClassName&quot;, os6.getClass()</span>
+<span class="nc" id="L116">				.getName());</span>
+
+<span class="nc" id="L118">		Map&lt;String, Object&gt; generated = writer.prepareMap(os6);</span>
+
+<span class="nc" id="L120">		assertTrue(equalMaps(expected, generated));</span>
+<span class="nc" id="L121">	}</span>
+
+	@Test
+	public void testObjectWithHashSet() {
+<span class="nc" id="L125">		Map&lt;String, Object&gt; expected = new HashMap&lt;String, Object&gt;();</span>
+<span class="nc" id="L126">		expected.put(&quot;set#java.util.Set&quot;, new HashMap&lt;String, Object&gt;());</span>
+<span class="nc" id="L127">		expected.put(&quot;#JSerializeMetaData#RootClassName&quot;, os7.getClass()</span>
+<span class="nc" id="L128">				.getName());</span>
+
+<span class="nc" id="L130">		Map&lt;String, Object&gt; generated = writer.prepareMap(os7);</span>
+
+<span class="nc" id="L132">		assertTrue(equalMaps(expected, generated));</span>
+<span class="nc" id="L133">	}</span>
+
+	@Test
+	public void testObjectWithTreeSet() {
+<span class="nc" id="L137">		Map&lt;String, Object&gt; expected = new HashMap&lt;String, Object&gt;();</span>
+<span class="nc" id="L138">		expected.put(&quot;ts#java.util.TreeSet&quot;, new HashMap&lt;String, Object&gt;());</span>
+<span class="nc" id="L139">		expected.put(&quot;#JSerializeMetaData#RootClassName&quot;, os8.getClass()</span>
+<span class="nc" id="L140">				.getName());</span>
+
+<span class="nc" id="L142">		Map&lt;String, Object&gt; generated = writer.prepareMap(os8);</span>
+
+<span class="nc" id="L144">		assertTrue(equalMaps(expected, generated));</span>
+<span class="nc" id="L145">	}</span>
+
+	@Test
+	public void testObjectWithLinkedList() {
+<span class="nc" id="L149">		Map&lt;String, Object&gt; expected = new HashMap&lt;String, Object&gt;();</span>
+<span class="nc" id="L150">		expected.put(&quot;link#java.util.LinkedList&quot;, new HashMap&lt;String, Object&gt;());</span>
+<span class="nc" id="L151">		expected.put(&quot;#JSerializeMetaData#RootClassName&quot;, os9.getClass()</span>
+<span class="nc" id="L152">				.getName());</span>
+
+<span class="nc" id="L154">		Map&lt;String, Object&gt; generated = writer.prepareMap(os9);</span>
+
+<span class="nc" id="L156">		assertTrue(equalMaps(expected, generated));</span>
+<span class="nc" id="L157">	}</span>
+
+
+	/**
+	 * Test sprawdza, czy serializowane są kolejki priorytetowe
+	 * Sprawdza, czy wygenerowana mapa będzie zgodna z oczekiwaniami.
+	 */
+	@Test
+	public void testObjectWithPriorityQueue() {
+<span class="nc" id="L166">		Map&lt;String, Object&gt; expected = new HashMap&lt;String, Object&gt;();</span>
+<span class="nc" id="L167">		expected.put(&quot;prq#java.util.PriorityQueue&quot;, new HashMap&lt;String, Object&gt;());</span>
+<span class="nc" id="L168">		expected.put(&quot;#JSerializeMetaData#RootClassName&quot;, os10.getClass()</span>
+<span class="nc" id="L169">				.getName());</span>
+
+<span class="nc" id="L171">		Map&lt;String, Object&gt; generated = writer.prepareMap(os10);</span>
+
+<span class="nc" id="L173">		assertTrue(equalMaps(expected, generated));</span>
+<span class="nc" id="L174">	}</span>
+
+
+	/**
+	 * Test sprawdza, czy serializowane są obiekty różne od typów prymitywnych
+	 * w danej klasie.
+	 * Sprawdza, czy wygenerowana mapa będzie zgodna z oczekiwaniami.
+	 */
+	@Test
+	public void testObjectWithAnotherObject() {
+<span class="nc" id="L184">		Map&lt;String, Object&gt; expected = new HashMap&lt;String, Object&gt;();</span>
+<span class="nc" id="L185">		expected.put(&quot;str#java.lang.String&quot;, new HashMap&lt;String, Object&gt;().put(</span>
+<span class="nc" id="L186">				&quot;value#charArray&quot;,</span>
+<span class="nc" id="L187">				new ArrayList&lt;Object&gt;().add(new Character[] { 'A', 'A' })));</span>
+<span class="nc" id="L188">		expected.put(&quot;#JSerializeMetaData#RootClassName&quot;, os2.getClass()</span>
+<span class="nc" id="L189">				.getName());</span>
+
+<span class="nc" id="L191">		Map&lt;String, Object&gt; generated = writer.prepareMap(os2);</span>
+
+<span class="nc" id="L193">		assertTrue(equalMaps(expected, generated));</span>
+<span class="nc" id="L194">	}</span>
+
+	@Test
+	public void testObjectWithTreeMap() {
+<span class="nc" id="L198">		Map&lt;String, Object&gt; expected = new HashMap&lt;String, Object&gt;();</span>
+<span class="nc" id="L199">		expected.put(&quot;map#java.util.TreeMap&quot;, new Object());</span>
+<span class="nc" id="L200">		expected.put(&quot;#JSerializeMetaData#RootClassName&quot;, os5.getClass()</span>
+<span class="nc" id="L201">				.getName());</span>
+
+<span class="nc" id="L203">		Map&lt;String, Object&gt; generated = writer.prepareMap(os5);</span>
+<span class="nc" id="L204">		writer.printMap(expected);</span>
+<span class="nc" id="L205">		writer.printMap(generated);</span>
+<span class="nc" id="L206">		assertTrue(equalMaps(expected, generated));</span>
+<span class="nc" id="L207">	}</span>
+
+	@Test
+	public void isRootNamePresent() {
+<span class="nc" id="L211">		Map&lt;String, Object&gt; generated = writer.prepareMap(os);</span>
+<span class="nc" id="L212">		assertTrue(generated.containsKey(&quot;#JSerializeMetaData#RootClassName&quot;));</span>
+<span class="nc" id="L213">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.3.201306030806</span>Test (2013-06-14 10:10:22)</div></body></html>

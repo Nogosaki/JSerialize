@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pl"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>JModelImpl.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">Test (2013-06-14 10:10:22)</a> &gt; <a href="../../index.html" class="el_group">Testing</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.html" class="el_package">exesoft</a> &gt; <span class="el_source">JModelImpl.java</span></div><h1>JModelImpl.java</h1><pre class="source lang-java linenums">package exesoft;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+/**
+ * 
+ * 
+ * @author Karol Buler, Wojciech Mucha
+ * 
+ */
+<span class="fc" id="L15">public class JModelImpl implements JModel {</span>
+
+	@SuppressWarnings({ &quot;rawtypes&quot;, &quot;unchecked&quot; })
+	@Override
+	public String encode(final Map&lt;String, Object&gt; toJson)
+			throws ClassCastException {
+
+<span class="fc" id="L22">		StringBuffer bufferJson = new StringBuffer();</span>
+<span class="fc" id="L23">		Iterator&lt;Entry&lt;String, Object&gt;&gt; it = toJson.entrySet().iterator();</span>
+
+<span class="fc bfc" id="L25" title="All 2 branches covered.">		while (it.hasNext()) {</span>
+<span class="fc" id="L26">			Map.Entry pairs = (Map.Entry) it.next();</span>
+<span class="fc bfc" id="L27" title="All 2 branches covered.">			if (pairs.getKey().equals(&quot;#JSerializeMetaData#RootClassName&quot;)) {</span>
+<span class="fc" id="L28">				bufferJson.insert(0, pairs.getValue() + &quot; {&quot;);</span>
+
+<span class="pc bpc" id="L30" title="1 of 2 branches missed.">			} else if (pairs.getValue() instanceof List) {</span>
+<span class="nc" id="L31">				bufferJson.append(getName((String) pairs.getKey()));</span>
+<span class="nc" id="L32">				bufferJson.append(handleList((List) pairs.getValue()));</span>
+<span class="nc bnc" id="L33" title="All 2 branches missed.">				if (it.hasNext()){</span>
+<span class="nc" id="L34">					bufferJson.append(&quot;, &quot;);</span>
+				}
+
+<span class="pc bpc" id="L37" title="1 of 2 branches missed.">			} else if (pairs.getValue() instanceof Map) {</span>
+<span class="fc" id="L38">				bufferJson.append(getName((String) pairs.getKey()));</span>
+<span class="fc" id="L39">				bufferJson.append(&quot;: {&quot;);</span>
+<span class="fc" id="L40">				bufferJson.append(handleMap((Map) pairs.getValue()));</span>
+
+<span class="fc" id="L42">			} else {</span>
+<span class="nc bnc" id="L43" title="All 2 branches missed.">				if (!it.hasNext()) {</span>
+<span class="nc bnc" id="L44" title="All 2 branches missed.">					if (pairs.getKey().toString().contains(&quot;value&quot;)){</span>
+<span class="nc" id="L45">						bufferJson.append(getName((String) pairs.getKey())</span>
+<span class="nc" id="L46">								+ &quot;: { &quot; + pairs.getValue() + &quot; &quot;);</span>
+<span class="nc" id="L47">					}</span>
+					else{
+<span class="nc" id="L49">						bufferJson.append(getName((String) pairs.getKey())</span>
+<span class="nc" id="L50">								+ &quot;:&quot; + pairs.getValue() + &quot; &quot;);</span>
+					}
+<span class="nc" id="L52">				} else {</span>
+<span class="nc bnc" id="L53" title="All 2 branches missed.">					if (pairs.getKey().toString().contains(&quot;value&quot;)){</span>
+<span class="nc" id="L54">						bufferJson.append(getName((String) pairs.getKey())</span>
+<span class="nc" id="L55">								+ &quot;: { &quot; + pairs.getValue() + &quot;, &quot;);</span>
+<span class="nc" id="L56">					}</span>
+					else{
+<span class="nc" id="L58">						bufferJson.append(getName((String) pairs.getKey())</span>
+<span class="nc" id="L59">								+ &quot;:&quot; + pairs.getValue() + &quot;, &quot;);</span>
+					}
+				}
+			}
+<span class="fc" id="L63">			it.remove();</span>
+		}
+<span class="fc" id="L65">		bufferJson.append(&quot;}&quot;);</span>
+
+<span class="fc" id="L67">		return bufferJson.toString();</span>
+	}
+
+	@SuppressWarnings({ &quot;rawtypes&quot;, &quot;unchecked&quot; })
+	private String handleList(List list) {
+
+<span class="fc" id="L73">		StringBuffer bufferJson = new StringBuffer();</span>
+		
+<span class="fc" id="L75">		bufferJson.append(&quot; &quot;);</span>
+<span class="pc bpc" id="L76" title="1 of 2 branches missed.">		if (list.get(0) instanceof List) {</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">			for (int i = 0; i &lt; list.size(); i++) {</span>
+<span class="nc" id="L78">				bufferJson.append(&quot;{&quot;);</span>
+<span class="nc" id="L79">				bufferJson.append(handleList((List) list.get(i)));</span>
+<span class="nc" id="L80">				bufferJson.append(&quot;}&quot;);</span>
+<span class="nc bnc" id="L81" title="All 2 branches missed.">				if (i &lt; list.size() - 1){</span>
+<span class="nc" id="L82">					bufferJson.append(&quot;, &quot;);</span>
+				}
+			}
+<span class="pc bfc" id="L85" title="All 2 branches covered.">		} else if (list.get(0) instanceof Map) {</span>
+<span class="fc bfc" id="L86" title="All 2 branches covered.">			for (int i = 0; i &lt; list.size(); i++) {</span>
+<span class="fc" id="L87">				bufferJson.append(&quot;{&quot;);</span>
+<span class="fc" id="L88">				bufferJson.append(handleMap((Map) list.get(i)));</span>
+<span class="fc bfc" id="L89" title="All 2 branches covered.">				if (i &lt; list.size() - 1){</span>
+<span class="fc" id="L90">					bufferJson.append(&quot;, &quot;);</span>
+				}
+			}
+<span class="fc" id="L93">		} else {</span>
+<span class="fc bfc" id="L94" title="All 2 branches covered.">			for (int i = 0; i &lt; list.size(); i++) {</span>
+<span class="fc" id="L95">				bufferJson.append(list.get(i));</span>
+<span class="fc bfc" id="L96" title="All 2 branches covered.">				if (i &lt; list.size() - 1){</span>
+<span class="fc" id="L97">					bufferJson.append(&quot;, &quot;);</span>
+				}
+			}
+		}
+<span class="fc" id="L101">		bufferJson.append(&quot; ]&quot;);</span>
+
+<span class="fc" id="L103">		return bufferJson.toString();</span>
+	}
+
+	@SuppressWarnings({ &quot;rawtypes&quot;, &quot;unchecked&quot; })
+	private String handleMap(Map&lt;String, Object&gt; mapaIn) {
+
+<span class="fc" id="L109">		StringBuffer bufferJson = new StringBuffer();</span>
+<span class="fc" id="L110">		Iterator&lt;Entry&lt;String, Object&gt;&gt; it = mapaIn.entrySet().iterator();</span>
+
+<span class="fc bfc" id="L112" title="All 2 branches covered.">		while (it.hasNext()) {</span>
+<span class="fc" id="L113">			Map.Entry pairs = (Map.Entry) it.next();</span>
+<span class="fc bfc" id="L114" title="All 2 branches covered.">			if (pairs.getValue() instanceof List) {</span>
+<span class="fc" id="L115">				bufferJson.append(getName(pairs.getKey().toString()));</span>
+<span class="fc" id="L116">				bufferJson.append(handleList((List) pairs.getValue()));</span>
+<span class="fc bfc" id="L117" title="All 2 branches covered.">				if (it.hasNext()){</span>
+<span class="fc" id="L118">					bufferJson.append(&quot;, &quot;);</span>
+				}
+
+<span class="fc bfc" id="L121" title="All 2 branches covered.">			} else if (pairs.getValue() instanceof Map) {</span>
+<span class="fc" id="L122">				bufferJson.append(getName(pairs.getKey().toString()));</span>
+<span class="fc" id="L123">				bufferJson.append(&quot;: {&quot;);</span>
+<span class="fc" id="L124">				bufferJson.append(handleMap((Map) pairs.getValue()));</span>
+
+<span class="fc" id="L126">			} else {</span>
+<span class="pc bpc" id="L127" title="1 of 2 branches missed.">				if (!it.hasNext()) {</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">					if (pairs.getKey().toString().contains(&quot;value&quot;)){</span>
+<span class="nc" id="L129">						bufferJson.append(getName(pairs.getKey().toString())</span>
+<span class="nc" id="L130">								+ &quot;: { &quot; + pairs.getValue() + &quot; &quot;);</span>
+<span class="nc" id="L131">					}</span>
+					else{
+<span class="nc" id="L133">						bufferJson.append(pairs.getKey() + &quot;:&quot;</span>
+<span class="nc" id="L134">								+ pairs.getValue() + &quot; &quot;);</span>
+					}
+<span class="nc" id="L136">				} else {</span>
+<span class="pc bpc" id="L137" title="1 of 2 branches missed.">					if (pairs.getKey().toString().contains(&quot;value&quot;)){</span>
+<span class="nc" id="L138">						bufferJson.append(getName(pairs.getKey().toString())</span>
+<span class="nc" id="L139">								+ &quot;: { &quot; + pairs.getValue() + &quot;, &quot;);</span>
+<span class="nc" id="L140">					}</span>
+					else{
+<span class="fc" id="L142">						bufferJson.append(getName(pairs.getKey().toString())</span>
+<span class="fc" id="L143">								+ &quot;:&quot; + pairs.getValue() + &quot;, &quot;);</span>
+					}
+				}
+			}
+<span class="fc" id="L147">			it.remove();</span>
+		}
+<span class="fc" id="L149">		bufferJson.append(&quot;}&quot;);</span>
+
+<span class="fc" id="L151">		return bufferJson.toString();</span>
+	}
+
+	@Override
+	public Map&lt;String, Object&gt; decode(String fromJson) {
+<span class="nc" id="L156">		Map&lt;String, Object&gt; outJson = new HashMap&lt;String, Object&gt;();</span>
+
+<span class="nc" id="L158">		return outJson;</span>
+	}
+
+	private String getName(String str) {
+<span class="fc" id="L162">		StringBuffer out = new StringBuffer();</span>
+
+<span class="fc" id="L164">		boolean hash = true;</span>
+<span class="fc" id="L165">		int i = 0;</span>
+<span class="fc bfc" id="L166" title="All 2 branches covered.">		while (hash) {</span>
+<span class="fc bfc" id="L167" title="All 2 branches covered.">			if (str.charAt(i) == '#') {</span>
+<span class="fc" id="L168">				hash = false;</span>
+<span class="fc" id="L169">			} else{</span>
+<span class="fc" id="L170">				out.append(str.charAt(i));</span>
+			
+<span class="fc" id="L172">			i++; }</span>
+		}
+
+<span class="fc" id="L175">		return &quot;\&quot;&quot; + out.toString() + &quot;\&quot;&quot;;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.3.201306030806</span>Test (2013-06-14 10:10:22)</div></body></html>
