@@ -30,9 +30,8 @@ public class JModelImpl implements JModel {
 			} else if (pairs.getValue() instanceof List) {
 				bufferJson.append(getName((String) pairs.getKey()));
 				bufferJson.append(handleList((List) pairs.getValue()));
-				if (it.hasNext()){
+				if (it.hasNext())
 					bufferJson.append(", ");
-				}
 
 			} else if (pairs.getValue() instanceof Map) {
 				bufferJson.append(getName((String) pairs.getKey()));
@@ -41,23 +40,19 @@ public class JModelImpl implements JModel {
 
 			} else {
 				if (!it.hasNext()) {
-					if (pairs.getKey().toString().contains("value")){
+					if (pairs.getKey().toString().contains("value"))
 						bufferJson.append(getName((String) pairs.getKey())
 								+ ": { " + pairs.getValue() + " ");
-					}
-					else{
+					else
 						bufferJson.append(getName((String) pairs.getKey())
 								+ ":" + pairs.getValue() + " ");
-					}
 				} else {
-					if (pairs.getKey().toString().contains("value")){
+					if (pairs.getKey().toString().contains("value"))
 						bufferJson.append(getName((String) pairs.getKey())
 								+ ": { " + pairs.getValue() + ", ");
-					}
-					else{
+					else
 						bufferJson.append(getName((String) pairs.getKey())
 								+ ":" + pairs.getValue() + ", ");
-					}
 				}
 			}
 			it.remove();
@@ -72,30 +67,27 @@ public class JModelImpl implements JModel {
 
 		StringBuffer bufferJson = new StringBuffer();
 		
-		bufferJson.append(" ");
+		bufferJson.append(":[ ");
 		if (list.get(0) instanceof List) {
 			for (int i = 0; i < list.size(); i++) {
 				bufferJson.append("{");
 				bufferJson.append(handleList((List) list.get(i)));
 				bufferJson.append("}");
-				if (i < list.size() - 1){
+				if (i < list.size() - 1)
 					bufferJson.append(", ");
-				}
 			}
 		} else if (list.get(0) instanceof Map) {
 			for (int i = 0; i < list.size(); i++) {
 				bufferJson.append("{");
 				bufferJson.append(handleMap((Map) list.get(i)));
-				if (i < list.size() - 1){
+				if (i < list.size() - 1)
 					bufferJson.append(", ");
-				}
 			}
 		} else {
 			for (int i = 0; i < list.size(); i++) {
 				bufferJson.append(list.get(i));
-				if (i < list.size() - 1){
+				if (i < list.size() - 1)
 					bufferJson.append(", ");
-				}
 			}
 		}
 		bufferJson.append(" ]");
@@ -114,9 +106,8 @@ public class JModelImpl implements JModel {
 			if (pairs.getValue() instanceof List) {
 				bufferJson.append(getName(pairs.getKey().toString()));
 				bufferJson.append(handleList((List) pairs.getValue()));
-				if (it.hasNext()){
+				if (it.hasNext())
 					bufferJson.append(", ");
-				}
 
 			} else if (pairs.getValue() instanceof Map) {
 				bufferJson.append(getName(pairs.getKey().toString()));
@@ -125,23 +116,19 @@ public class JModelImpl implements JModel {
 
 			} else {
 				if (!it.hasNext()) {
-					if (pairs.getKey().toString().contains("value")){
+					if (pairs.getKey().toString().contains("value"))
 						bufferJson.append(getName(pairs.getKey().toString())
 								+ ": { " + pairs.getValue() + " ");
-					}
-					else{
+					else
 						bufferJson.append(pairs.getKey() + ":"
 								+ pairs.getValue() + " ");
-					}
 				} else {
-					if (pairs.getKey().toString().contains("value")){
+					if (pairs.getKey().toString().contains("value"))
 						bufferJson.append(getName(pairs.getKey().toString())
 								+ ": { " + pairs.getValue() + ", ");
-					}
-					else{
+					else
 						bufferJson.append(getName(pairs.getKey().toString())
 								+ ":" + pairs.getValue() + ", ");
-					}
 				}
 			}
 			it.remove();
@@ -166,10 +153,9 @@ public class JModelImpl implements JModel {
 		while (hash) {
 			if (str.charAt(i) == '#') {
 				hash = false;
-			} else{
+			} else
 				out.append(str.charAt(i));
-			
-			i++; }
+			i++;
 		}
 
 		return "\"" + out.toString() + "\"";
