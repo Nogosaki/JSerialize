@@ -17,11 +17,15 @@ public class JSerializeWriterImplTest {
 
 	JSerializeWriter writer;
 	ObjectWithPrimitives os;
+	ObjectWithAnotherObject os2;
+	ObjectWithList os3;
+	ObjectWithPrivateField os4;
 	ObjectWithTreeMap os5;
 	ObjectWithTransientField os6;
 	ObjectWithHashSet os7;
 	ObjectWithTreeSet os8;
 	ObjectWithLinkedList os9;
+	ObjectWithPriorityQueue os10;
 
 	boolean equalMaps(Map<String, Object> m1, Map<String, Object> m2) {
 
@@ -38,13 +42,21 @@ public class JSerializeWriterImplTest {
 	public void setUp() throws Exception {
 		writer = new JSerializeWriterImpl();
 		os = new ObjectWithPrimitives();
+		os2 = new ObjectWithAnotherObject();
+		os3 = new ObjectWithList();
+		os4 = new ObjectWithPrivateField();
 		os5 = new ObjectWithTreeMap();
 		os6 = new ObjectWithTransientField();
 		os7 = new ObjectWithHashSet();
 		os8 = new ObjectWithTreeSet();
 		os9 = new ObjectWithLinkedList();
+		os10 = new ObjectWithPriorityQueue();
 	}
 
+/**
+ * Test sprawdzaj¹cy dzia³anie metody dla klasy z typem prymitywnym np. int, float.
+ * Sprawdza, czy wygenerowana mapa bêdzie zgodna z oczekiwaniami.
+ */
 	@Test
 	public void testObjectWithPrimitives() {
 
@@ -55,6 +67,42 @@ public class JSerializeWriterImplTest {
 				.getName());
 
 		Map<String, Object> generated = writer.prepareMap(os);
+
+		assertTrue(equalMaps(expected, generated));
+	}
+
+/**
+ * Test sprawdzaj¹cy dzia³anie metody dla klasy z list¹ np.ArrayList.
+ * Sprawdza, czy wygenerowana mapa bêdzie zgodna z oczekiwaniami.
+ */
+
+	@Test
+	public void testObjectWithList() {
+		Map<String, Object> expected = new HashMap<String, Object>();
+		expected.put("lista#java.util.ArrayList", new HashMap<String, Object>());
+		expected.put("#JSerializeMetaData#RootClassName", os3.getClass()
+				.getName());
+
+		Map<String, Object> generated = writer.prepareMap(os3);
+
+		assertTrue(equalMaps(expected, generated));
+	}
+
+
+/**
+ * Test sprawdza, czy prywatne pola klasy s¹ serializowane.
+ * Sprawdza, czy wygenerowana mapa bêdzie zgodna z oczekiwaniami
+ */
+	@Test
+	public void testObjectWithPrivateFields() {
+		Map<String, Object> expected = new HashMap<String, Object>();
+		expected.put("a#int", 10);
+		expected.put("b#int", 10);
+		expected.put("c#int", 10);
+		expected.put("#JSerializeMetaData#RootClassName", os4.getClass()
+				.getName());
+
+		Map<String, Object> generated = writer.prepareMap(os4);
 
 		assertTrue(equalMaps(expected, generated));
 	}
@@ -104,6 +152,43 @@ public class JSerializeWriterImplTest {
 				.getName());
 
 		Map<String, Object> generated = writer.prepareMap(os9);
+
+		assertTrue(equalMaps(expected, generated));
+	}
+
+
+	/**
+	 * Test sprawdza, czy serializowane s¹ kolejki priorytetowe
+	 * Sprawdza, czy wygenerowana mapa bêdzie zgodna z oczekiwaniami.
+	 */
+	@Test
+	public void testObjectWithPriorityQueue() {
+		Map<String, Object> expected = new HashMap<String, Object>();
+		expected.put("prq#java.util.PriorityQueue", new HashMap<String, Object>());
+		expected.put("#JSerializeMetaData#RootClassName", os10.getClass()
+				.getName());
+
+		Map<String, Object> generated = writer.prepareMap(os10);
+
+		assertTrue(equalMaps(expected, generated));
+	}
+
+
+	/**
+	 * Test sprawdza, czy serializowane s¹ obiekty ró¿ne od typów prymitywnych
+	 * w danej klasie.
+	 * Sprawdza, czy wygenerowana mapa bêdzie zgodna z oczekiwaniami.
+	 */
+	@Test
+	public void testObjectWithAnotherObject() {
+		Map<String, Object> expected = new HashMap<String, Object>();
+		expected.put("str#java.lang.String", new HashMap<String, Object>().put(
+				"value#charArray",
+				new ArrayList<Object>().add(new Character[] { 'A', 'A' })));
+		expected.put("#JSerializeMetaData#RootClassName", os2.getClass()
+				.getName());
+
+		Map<String, Object> generated = writer.prepareMap(os2);
 
 		assertTrue(equalMaps(expected, generated));
 	}
