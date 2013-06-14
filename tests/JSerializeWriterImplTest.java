@@ -26,6 +26,8 @@ public class JSerializeWriterImplTest {
 	ObjectWithTreeSet os8;
 	ObjectWithLinkedList os9;
 	ObjectWithPriorityQueue os10;
+	ObjectWithArrayDeque os11;
+	ObjectWithBooleanField os12;
 
 	boolean equalMaps(Map<String, Object> m1, Map<String, Object> m2) {
 
@@ -51,12 +53,14 @@ public class JSerializeWriterImplTest {
 		os8 = new ObjectWithTreeSet();
 		os9 = new ObjectWithLinkedList();
 		os10 = new ObjectWithPriorityQueue();
+		os11 = new ObjectWithArrayDeque();
+		os12 = new ObjectWithBooleanField();
 	}
 
-/**
- * Test sprawdzaj¹cy dzia³anie metody dla klasy z typem prymitywnym np. int, float.
- * Sprawdza, czy wygenerowana mapa bêdzie zgodna z oczekiwaniami.
- */
+	/**
+	 * Test sprawdzaj¹cy dzia³anie metody dla klasy z typem prymitywnym np. int,
+	 * float. Sprawdza, czy wygenerowana mapa bêdzie zgodna z oczekiwaniami.
+	 */
 	@Test
 	public void testObjectWithPrimitives() {
 
@@ -71,10 +75,10 @@ public class JSerializeWriterImplTest {
 		assertTrue(equalMaps(expected, generated));
 	}
 
-/**
- * Test sprawdzaj¹cy dzia³anie metody dla klasy z list¹ np.ArrayList.
- * Sprawdza, czy wygenerowana mapa bêdzie zgodna z oczekiwaniami.
- */
+	/**
+	 * Test sprawdzaj¹cy dzia³anie metody dla klasy z list¹ np.ArrayList.
+	 * Sprawdza, czy wygenerowana mapa bêdzie zgodna z oczekiwaniami.
+	 */
 
 	@Test
 	public void testObjectWithList() {
@@ -88,11 +92,23 @@ public class JSerializeWriterImplTest {
 		assertTrue(equalMaps(expected, generated));
 	}
 
+	@Test
+	public void testObjectWithArrayDeque() {
+		Map<String, Object> expected = new HashMap<String, Object>();
+		expected.put("deque#java.util.ArrayDeque",
+				new HashMap<String, Object>());
+		expected.put("#JSerializeMetaData#RootClassName", os11.getClass()
+				.getName());
 
-/**
- * Test sprawdza, czy prywatne pola klasy s¹ serializowane.
- * Sprawdza, czy wygenerowana mapa bêdzie zgodna z oczekiwaniami
- */
+		Map<String, Object> generated = writer.prepareMap(os11);
+
+		assertTrue(equalMaps(expected, generated));
+	}
+
+	/**
+	 * Test sprawdza, czy prywatne pola klasy s¹ serializowane. Sprawdza, czy
+	 * wygenerowana mapa bêdzie zgodna z oczekiwaniami
+	 */
 	@Test
 	public void testObjectWithPrivateFields() {
 		Map<String, Object> expected = new HashMap<String, Object>();
@@ -156,15 +172,15 @@ public class JSerializeWriterImplTest {
 		assertTrue(equalMaps(expected, generated));
 	}
 
-
 	/**
-	 * Test sprawdza, czy serializowane s¹ kolejki priorytetowe
-	 * Sprawdza, czy wygenerowana mapa bêdzie zgodna z oczekiwaniami.
+	 * Test sprawdza, czy serializowane s¹ kolejki priorytetowe Sprawdza, czy
+	 * wygenerowana mapa bêdzie zgodna z oczekiwaniami.
 	 */
 	@Test
 	public void testObjectWithPriorityQueue() {
 		Map<String, Object> expected = new HashMap<String, Object>();
-		expected.put("prq#java.util.PriorityQueue", new HashMap<String, Object>());
+		expected.put("prq#java.util.PriorityQueue",
+				new HashMap<String, Object>());
 		expected.put("#JSerializeMetaData#RootClassName", os10.getClass()
 				.getName());
 
@@ -173,11 +189,10 @@ public class JSerializeWriterImplTest {
 		assertTrue(equalMaps(expected, generated));
 	}
 
-
 	/**
-	 * Test sprawdza, czy serializowane s¹ obiekty ró¿ne od typów prymitywnych
-	 * w danej klasie.
-	 * Sprawdza, czy wygenerowana mapa bêdzie zgodna z oczekiwaniami.
+	 * Test sprawdza, czy serializowane s¹ obiekty ró¿ne od typów prymitywnych w
+	 * danej klasie. Sprawdza, czy wygenerowana mapa bêdzie zgodna z
+	 * oczekiwaniami.
 	 */
 	@Test
 	public void testObjectWithAnotherObject() {
@@ -203,6 +218,19 @@ public class JSerializeWriterImplTest {
 		Map<String, Object> generated = writer.prepareMap(os5);
 		writer.printMap(expected);
 		writer.printMap(generated);
+		assertTrue(equalMaps(expected, generated));
+	}
+
+	@Test
+	public void testObjectWithBooleanField() {
+		Map<String, Object> expected = new HashMap<String, Object>();
+		expected.put("a#boolean", true);
+		expected.put("b#boolean", false);
+		expected.put("#JSerializeMetaData#RootClassName", os12.getClass()
+				.getName());
+
+		Map<String, Object> generated = writer.prepareMap(os12);
+
 		assertTrue(equalMaps(expected, generated));
 	}
 
