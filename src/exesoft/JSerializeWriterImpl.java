@@ -8,7 +8,6 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.Boolean;
-import java.math.BigDecimal;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Date;
@@ -345,8 +344,8 @@ private JModel parses = new JModelImpl();
 	boolean shouldISkipThisField(@SuppressWarnings("rawtypes") final Class c,
 			final Field field, final boolean checkTransient) {
 		boolean shouldI = true;
-		String s = new String();
-		if ((s = fieldsToConsider.get(c.getName())) != null) {
+		String s = fieldsToConsider.get(c.getName());
+		if (s != null) {
 			if (s.contains(field.getName())) {
 				shouldI = false;
 			} else {
