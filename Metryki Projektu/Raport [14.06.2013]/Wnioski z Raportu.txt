@@ -1,0 +1,50 @@
+~~~_______________________________________~~~
+    Przeprowadzony raport metryk z dnia
+14.06.2013 nie ujawnil zadnych wartosci,
+ktore przekraczalyby zalecane wyniki dla
+poszczegolnych metryk.
+    Liczba Atrybutow zmalala 
+do liczby 8. Srednia metryki Number 
+of Attributes wykazala wartosc 2 (czyli 
+spadek wartosci o 0,5), przy czym wyniki 
+metryki pozostaly w bezpiecznych granicach, 
+potwierdzajac prawidlowa dekompozycje klas.
+    Wartosci dla Zagniezdzenia Blokow Kodu 
+pozostaly w zakresie nie przekraczajacym 
+gornej granicy wyniku optymalnego wynaszacego 
+5. Metryka Nested Block Depth podskoczyla o
+srednia wartosc do 1,917 (roznica 0,19 od 
+ostatniego raportu). Poziom skomplikowania 
+kodu projektu nie ulegl zmiane, pozostal
+na zwyczajnym poziomie.
+    Implementacje skladaja sie
+przecietnie z 8,25 metod (wzrost o 1 od 
+czasu wykonania poprzedniego raportu). 
+Najwiecej, 15 metod, posiada JSerializeWriterImpl, 
+Zalecana ilosc 20 metod nie zostala wiec 
+przekroczona.
+    Zlozonosc klas (Weighted Methods 
+per Class) dla analizowanego zakresu wyniosla 
+w sumie 96 (wzrost wartosci wyniosl 17). 
+Poszczegolne wartosci dla implementacji 
+w projekcie nie przekroczyly optymalnego 
+przedzialu od jeden do stu. 
+    Metody posiadaja w sumie 562 linie
+kodu (to o 87 linii wiecej od czasu
+ostatniego raportu). Srednio na pojedyncza 
+metode przypada w przyblizeniu 
+15,611 linii (to o 1,217 linii przypadajacych 
+na metode wiecej, niz przy poprzedniej 
+analizie).
+    Metryki liczb parametrow metod w dalszym
+ciagu wahaja sie w przedziale od 0 do 3 
+(srednia wartosc wyniosla 0,889). Maksymalna 
+zalecana wartosc to 5 - nie zostala ona 
+przekroczona.
+    Projekt sklada sie z 4 klas, 33 metod 
+(liczba metod wzrosla o 4), 1 pakietu, 
+3 interface'ow.
+    Laczna suma linii kodu projektu 
+wynosi 724 (dopisano 83 linie kodu od 
+czasu wykonania ostatniego raportu).
+~~~_______________________________________~~~
