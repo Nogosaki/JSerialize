@@ -9,11 +9,20 @@ import java.util.Map.Entry;
 /**
  * 
  * 
+ * Class creates String in JSON's format based on map of objects.
  * @author Karol Buler, Wojciech Mucha
  * 
  */
 public class JModelImpl implements JModel {
-
+	/* 
+	 * 
+	 * Method encode takes map of objects and return String compatible with JSON's format.
+	 * @author Karol Buler
+	 * 
+	 * @see exesoft.JModel#encode(java.util.Map)
+	 * @param toJson - a Map <String, Object>
+	 * @return String in JSON's format.
+	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public String encode(final Map<String, Object> toJson)
@@ -62,6 +71,11 @@ public class JModelImpl implements JModel {
 		return bufferJson.toString();
 	}
 
+	/**
+	 * Helper method of Encode class that uses lists (for example ArrayList) and returns JSON's format.
+	 * @param list - a List
+	 * @return String in JSON's format.
+	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private String handleList(List list) {
 
@@ -95,6 +109,11 @@ public class JModelImpl implements JModel {
 		return bufferJson.toString();
 	}
 
+	/**
+	 * Helper method of Encode class that uses maps (for example hashMap) and returns String in JSON's format.
+	 * @param mapaIn - Map <String, Object>
+	 * @return String in JSON's format.
+	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private String handleMap(Map<String, Object> mapaIn) {
 
@@ -138,6 +157,12 @@ public class JModelImpl implements JModel {
 		return bufferJson.toString();
 	}
 
+	/* 
+	 * Method encode takes JSON's String and returns map of objects.
+	 * @author Wojciech Mucha
+	 * @return map of objects
+	 * @see exesoft.JModel#decode(java.lang.String)
+	 */
 	@Override
 	public Map<String, Object> decode(String fromJson) {
 		Map<String, Object> outJson = new HashMap<String, Object>();
@@ -145,6 +170,11 @@ public class JModelImpl implements JModel {
 		return outJson;
 	}
 
+	/**
+	 * Helper method class of Encode that returns names of praticular object fields
+	 * @param str - a String
+	 * @return String in JSON's format.
+	 */
 	private String getName(String str) {
 		StringBuffer out = new StringBuffer();
 
