@@ -1,4 +1,4 @@
-package exesoft;
+package tests.testsJSerializeReaderImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,4 +12,8 @@ public class Rodzina {
 
 	String name;
 
+	public Rodzina() {
+		
+	}
+	
 }

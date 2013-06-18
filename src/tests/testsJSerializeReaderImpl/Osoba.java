@@ -1,4 +1,4 @@
-package exesoft;
+package tests.testsJSerializeReaderImpl;
 
 public class Osoba {
 	String imie;
